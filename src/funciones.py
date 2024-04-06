@@ -1,7 +1,10 @@
+import pandas as pd
 from nltk.stem import PorterStemmer
 import nltk
 import re
 nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('punkt')
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
@@ -43,3 +46,7 @@ def remove_special_characters(sentences):
         clean_text = re.sub(pattern, '', sent)
         clean_sentences.append(clean_text)
     return clean_sentences
+
+def tokenize_words_int(column: pd.Series):
+    words = row.split(' ')
+    
