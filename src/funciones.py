@@ -10,6 +10,7 @@ from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from collections import Counter
+import torch
 
 def get_stems(words: list):
     ps = PorterStemmer()
@@ -66,5 +67,62 @@ def filter_and_tokenize_words(words: list, word_dict: dict):
 
 def tokenize_summary(row):
     return get_word_tokens(get_sent_tokens(row))
-    
-    
+     
+def train_model(model, epochs, x_train, x_test, y_train, y_test, optimizer, criterion, device):
+    history = {'train_loss': [], 'train_accuracy': [], 'valid_loss': [], 'valid_accuracy': []}
+    for epoch in range(epochs):
+        model.train()  # Set the model to train mode
+        train_loss = 0.0
+        train_accuracy = 0.0
+        
+        # Iterate over batches of training data
+        for inputs, labels in zip(x_train, y_train):
+            # Zero the parameter gradients
+            optimizer.zero_grad()
+            # Forward pass
+            inputs = inputs.unsqueeze(0)  # Add batch dimension
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+            outputs = model(inputs)
+            
+            # Compute loss
+            loss = criterion(outputs, labels.unsqueeze(0).float())
+            
+            # Backward pass and optimization
+            loss.backward()
+            optimizer.step()
+            
+            # Update running loss
+            train_loss += loss.item()
+            train_accuracy += (outputs.argmax(1) == labels).sum().item()
+        
+        train_loss /= len(x_train)
+        train_accuracy /= len(x_train)
+        history['train_loss'].append(train_loss)
+        history['train_accuracy'].append(train_accuracy)
+        
+        print(f'Epoch {epoch + 1}/{epochs} - '
+            f'Train Loss: {train_loss:.4f}, '
+            f'Train Accuracy: {train_accuracy:.4f}')
+        
+        model.eval()
+        valid_loss = 0.0
+        valid_accuracy = 0.0
+        for inputs, labels in zip(x_test, y_test):
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            valid_loss += loss.item()
+            valid_accuracy += (outputs.argmax(1) == labels).sum().item()
+
+        valid_loss /= len(x_test)
+        valid_accuracy /= len(x_test)
+        history['valid_loss'].append(valid_loss)
+        history['valid_accuracy'].append(valid_accuracy)
+
+        print(f'Epoch {epoch + 1}/{epochs} - '
+                f'Validation Loss: {valid_loss:.4f}, '
+                f'Validation Accuracy: {valid_accuracy:.4f}')
+    return history
