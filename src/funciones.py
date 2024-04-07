@@ -1,5 +1,4 @@
 import pandas as pd
-from nltk.stem import PorterStemmer
 import nltk
 import re
 nltk.download('wordnet')
@@ -9,6 +8,8 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
+from collections import Counter
 
 def get_stems(words: list):
     ps = PorterStemmer()
@@ -47,6 +48,23 @@ def remove_special_characters(sentences):
         clean_sentences.append(clean_text)
     return clean_sentences
 
-def tokenize_words_int(column: pd.Series):
-    words = row.split(' ')
+# gets word frequency and returns a dict with top max_features elements
+def get_word_counter(column, max_features=None):
+    all_words = ' '.join(column).split(' ')
+    word_count = Counter(all_words)
+    
+    return dict(word_count.most_common(max_features))
+
+# Gets a list and returns the words turned into assigned integers
+def filter_and_tokenize_words(words: list, word_dict: dict):
+    result = []
+    for word in words:
+        if word in word_dict:
+            result.append(word_dict[word])
+            
+    return result
+
+def tokenize_summary(row):
+    return get_word_tokens(get_sent_tokens(row))
+    
     
