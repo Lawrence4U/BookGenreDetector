@@ -12,10 +12,10 @@ from nltk.stem import PorterStemmer
 from collections import Counter
 import numpy as np
 from sklearn.model_selection import GridSearchCV
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
+#from keras.models import Sequential
+#from keras.layers import Dense, Dropout
 from keras.optimizers import Adam, SGD
-from keras.losses import BinaryCrossentropy
+#from keras.losses import BinaryCrossentropy
 
 def get_stems(words: list):
     ps = PorterStemmer()
@@ -73,20 +73,20 @@ def filter_and_tokenize_words(words: list, word_dict: dict):
 def tokenize_summary(row):
     return get_word_tokens(get_sent_tokens(row))
 
-def create_model(input_dim=1000, num_classes=9, optimizer='adam', 
-                 criterion="categorical_crossentropy", activation='relu', dropout_rate=0.0,
-                 neurons=64,  layers=3, learning_rate=0.001):
-    optimizer = build_optimizer(optimizer, learning_rate=learning_rate)
-    criterion = build_criterion(criterion)
+# def create_model(input_dim=1000, num_classes=9, optimizer='adam', 
+#                  criterion="categorical_crossentropy", activation='relu', dropout_rate=0.0,
+#                  neurons=64,  layers=3, learning_rate=0.001):
+#     optimizer = build_optimizer(optimizer, learning_rate=learning_rate)
+#     criterion = build_criterion(criterion)
     
-    model = Sequential()
-    for _ in range(layers):
-        model.add(Dense(neurons, input_dim=input_dim, activation=activation))
-        model.add(Dropout(dropout_rate))
-    model.add(Dense(neurons, activation=activation))
-    model.add(Dense(num_classes, activation='softmax'))
-    model.compile(loss=criterion, optimizer=optimizer, metrics=['accuracy'])
-    return model
+#     model = Sequential()
+#     for _ in range(layers):
+#         model.add(Dense(neurons, input_dim=input_dim, activation=activation))
+#         model.add(Dropout(dropout_rate))
+#     model.add(Dense(neurons, activation=activation))
+#     model.add(Dense(num_classes, activation='softmax'))
+#     model.compile(loss=criterion, optimizer=optimizer, metrics=['accuracy'])
+#     return model
 
 def build_optimizer(optimizer, learning_rate):
     if optimizer == "sgd":
@@ -95,8 +95,8 @@ def build_optimizer(optimizer, learning_rate):
         optimizer = Adam(lr=learning_rate)
     return optimizer
 
-def build_criterion(criterion):
-    return BinaryCrossentropy()
+# def build_criterion(criterion):
+#     return BinaryCrossentropy()
      
 # def train_model(model, epochs, x_train, x_test, y_train, y_test, optimizer, criterion, device):
 #     history = {'train_loss': [], 'train_accuracy': [], 'valid_loss': [], 'valid_accuracy': []}
