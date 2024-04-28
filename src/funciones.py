@@ -1,4 +1,4 @@
-import pandas as pd
+# import pandas as pd
 import nltk
 import re
 nltk.download('wordnet')
@@ -10,8 +10,8 @@ from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from collections import Counter
-import numpy as np
-from sklearn.model_selection import GridSearchCV
+# import numpy as np
+# from sklearn.model_selection import GridSearchCV
 #from keras.models import Sequential
 #from keras.layers import Dense, Dropout
 from keras.optimizers import Adam, SGD
