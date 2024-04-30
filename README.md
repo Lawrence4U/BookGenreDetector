@@ -18,11 +18,15 @@ Each summary requires some preprocessing to be able to be sent to any classifica
 5. removal of stop_words
 
 After this first iteration we obtain the following preliminary results:
+
 ![alt text](imgs\image-1.png)
+
 We can see that there are still several words that are undesirable like "hi" and "ha" which provide no real meaning in determining the significance in the summary.
 
 Plotting these per genre in a wordcloud we obtain the following:
+
 ![alt text](imgs\image-2.png)
+
 Because of this, the next step was decided:
 
 6. **Manual cleansing of other undesired words**
@@ -75,9 +79,11 @@ We find both models coming out as pretty similar, with no big differences but th
 We repeat the previous process for logisitc regression, where we get the following resutls for each dataset:
 
 Regular Dataset:
+
 ![Regular Dataset](imgs/log.png)
 
 Cleaned Dataset:
+
 ![Cleaned dataset](imgs/logc.png)
 
 Here we get a better result than with randomForest with higher accuracies over all as well as better f1-scores, shwoing why this model is generally better suited for this types of problems.
