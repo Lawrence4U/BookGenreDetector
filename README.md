@@ -8,7 +8,7 @@ In a first pass through the models, the first model resulted incomplete to be us
 
 After adding the extra samples the resulting dataset comes as follows:
 
-![alt text](imgs\image.png)
+![alt text](imgs/image.png)
 
 Each summary requires some preprocessing to be able to be sent to any classification model. For this, some basic NLP processing is done. For our case the process is as follows:
 1. Tokenization of sentences
@@ -19,13 +19,13 @@ Each summary requires some preprocessing to be able to be sent to any classifica
 
 After this first iteration we obtain the following preliminary results:
 
-![alt text](imgs\image-1.png)
+![alt text](imgs/image-1.png)
 
 We can see that there are still several words that are undesirable like "hi" and "ha" which provide no real meaning in determining the significance in the summary.
 
 Plotting these per genre in a wordcloud we obtain the following:
 
-![alt text](imgs\image-2.png)
+![alt text](imgs/image-2.png)
 
 Because of this, the next step was decided:
 
