@@ -48,7 +48,7 @@ In terms of preprocessing, a TF-IDF was applied to the summaries to obtain the i
 For each model, a hyperparameter tunning was carried out to determine which configuration of each model works best for each kind of data. This was done thorugh either GridSearch or OptunaSearch.
 The results are as following:
 
-### Random Forest
+### **Random Forest**
 
 Final parameters for regular dataset:
 + 'max_depth': 50
@@ -74,7 +74,7 @@ Obtaining the following results:
 
 We find both models coming out as pretty similar, with no big differences but the number of estimators. Furthermore, the accuracies in test are both extremely similar rounding 55%. From the results of both we can see that some genres are much more difficult to predict than others. For example, in science fiction the models tend to overpredict them, meaning they usually catch the science fiction books, but others that aren't are missclassified. This can be because of various factors, one maybe due to the imbalance of the dataset as, for example, Horror has perfect accuracy yet pretty bad recall as the model isn't looking for it as much as others. 
 
-### Logistic Regression
+### **Logistic Regression**
 
 We repeat the previous process for logisitc regression, where we get the following resutls for each dataset:
 
@@ -88,7 +88,7 @@ Cleaned Dataset:
 
 Here we get a better result than with randomForest with higher accuracies over all as well as better f1-scores, shwoing why this model is generally better suited for this types of problems.
 
-### SVM
+### **SVM**
 
 Here, another hyperparameter tunning was made, obtaining the following results:
 
@@ -121,7 +121,17 @@ For DeepLearning models we have decided to follow a similar preprocessing as it 
 
 ![alt text](imgs/hist.png)
 
-After this, training and testing was conducted. First, a simple LSTM network was tried, but due to the low amounts of data and overall characteristics of the network, the performance was abominal, being discarded directly. After this, a regular Dense neural network was tried, making sure to try various configurations. The configurations tried are between these parameters:
+### **LSTM**
+
+After this, training and testing was conducted. First, a simple LSTM network was tried. At first, the resutls were pretty underwhelming yet after some tweaking some valid resutls were achieved. The network is composed of an embedding layer, an LSTM and a final dense layer for class prediction.
+
+![alt text](imgs/image13.png)
+
+![alt text](imgs/qwer.png)
+
+### **Dense**
+
+After this, a regular Dense neural network was tried, making sure to try various configurations. The configurations tried are between these parameters:
 
 + n_neurons: 32 to 256
 + activation function: relu or tanh
@@ -145,9 +155,65 @@ With parameters:
 In this case the accuracy doesn't improve over 20% meaning that either this model is too complex for the task, or the data is not enough for it to be trained properly.
 
 
+## First Conclusions
+
+After examining several models and more that didn't make the cut, this use case of text processing shows that, at least for the datasets used, ML models are better suited, and DeepLearning ones require an amount of data that is not available for our use case. 
+
+# Extra case - taking only 4 classes and performing undersampling
+
+When processing the dataset we notice 2 main issues: there is huge unbalancing in the data, and there are a lot of classes with not a lot of support. Because of this, it has been decided to try everything again but running it for onyl the top 4 classes in the dataset being: Science Fiction, Fiction, Fantasy, and Children's literature.
+
+The preprocessing is pretty much the same, so no more introduction is needed, we will go directly into the model performances. 
+
+## ML Models
+
+### **Random Forest**
++ 'max_depth': 50
++ 'max_features': 'sqrt'
++ 'min_samples_leaf': 2
++ 'min_samples_split': 10
++ 'n_estimators': 1500
+
+Here we achieve a higher accuracy of 70%, up 16pp from the previous case.
+
+![alt text](imgs/image8.png)
+
+### **Logistic Regression**
+
+Here we achieve a higher accuracy of 71%, up 7 from the previous case.
+
+![alt text](imgs/imageeqwr.png)
+
+### **SVM**
++ 'C': 1
++ 'kernel': 'linear'
++ 'degree': 5
++ 'gamma': 'auto'
++ 'shrinking': False
++ 'probability': True
+
+Here we achieve a higher accuracy of 72%, up 5 from the previous case.
+
+![alt text](imgs/oweiturwoperiu.png)
+
+## Deep Learning
+
+In this area is where we find the biiggest differences from the previous dataset.
+
+### **LSTM**
+Same model as with the other datasets:
+
+![alt text](imgs/imageLSTM.png)
+
+Surprisingly good accuracy with 77% where in the previous case we only found 45% accuracy, almost **doubling** it!
+
+
+### **Dense**
+
+In the case of the dense neural network, we don't find significant increases in accuracy or prediction quality, only a minor improvement. 
+
+![alt text](imgs/imageDense.png)
+
 ## Conclusions
 
-After examining several models and more that didn;t make the cut, this use case of text processing shows that, at least for the datasets used, ML models are better suited, and DeepLearning ones require an amount of data that is not available for our use case. 
-
-Started with BooksDataSet but too low data 
-High Precision on Models
+As expected, taking the simpler dataset and resampling it to match the cases for each class, every model has found some improvement in the predictions. Balancing + reducing the number of classes to predict really benefits each model but specially in this case, the LSTM, which would be prefered to be deployed in this case from between all models, which with the previous dataset a simpler model was much better suited. 
